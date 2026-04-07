@@ -94,6 +94,11 @@ function playGame(){
     -2. If counter is <=5, reset game.
     -3. Display winner
     */
+    for(let i=0; i<5;i++){
+        const computerSelection=getComputerChoice();
+        const humanSelection=getHumanChoice();
+        playRound(humanSelection,computerSelection);
+    }
   
    
         
