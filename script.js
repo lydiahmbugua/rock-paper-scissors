@@ -14,13 +14,11 @@ function getComputerChoice(){
     let choice;
     if (num<=3){
         choice="Rock";
-        console.log("Rock");
+        
     }else if(num>3&&num<=6){
         choice="Paper";
-        console.log("Paper");
     }else{
         choice="Scissors";
-        console.log("Scissors");
     }
     return choice;
 }
@@ -33,7 +31,6 @@ function getHumanChoice(){
 
     let input=prompt("Choose: Rock, Paper, Scissors")
     
-    console.log(input);
 
     if (input==="Rock"){
         console.log("Rock");
@@ -48,22 +45,19 @@ function getHumanChoice(){
 
 
 function playGame(){
+     
+   
     let humanScore=0;
     let computerScore=0;
-    let counter=0;
-    function playRound(humanChoice, computerChoice){
-        counter++;
 
+    function playRound(humanChoice, computerChoice){
         if(humanChoice.toLowerCase()==computerChoice.toLowerCase()){
-            
             console.log("Draw!")
         }else if(humanChoice.toLowerCase()=="rock"&& computerChoice.toLowerCase()=="scissors"){
             humanScore++;
-            
             console.log("You win! Rock beats Scissors")
         }else if(humanChoice.toLowerCase()=="paper"&& computerChoice.toLowerCase()=="rock"){
             humanScore++;
-            
             console.log("You win! Paper beats Rock")
         }else if(humanChoice.toLowerCase()=="scissors"&& computerChoice.toLowerCase()=="paper"){
             humanScore++;
@@ -84,9 +78,8 @@ function playGame(){
         
     }
 
-    const computerSelection=getComputerChoice();
-    const humanSelection=getHumanChoice();
-        playRound(computerSelection,humanSelection);
+   
+        
 
     /* 
     Need to repeat the round 5 times
