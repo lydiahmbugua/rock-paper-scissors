@@ -1,121 +1,87 @@
-const button=document.querySelector('button');
-const rock=document.querySelector('#rock');
-const paper=document.querySelector('#paper');
-const scissors=document.querySelector('#scissors');
+const rock = document.querySelector('#rock');
+const paper = document.querySelector('#paper');
+const scissors = document.querySelector('#scissors');
 
-let humanScore=0;
-let computerScore=0;
-let isGameOver=false;
+let humanScore = 0;
+let computerScore = 0;
+let isGameOver = false;
 
-
-
-
- 
-
-function getComputerChoice(){
-  
-    const num=Math.random()*10;
-    let choice;
-    if (num<=3){
-        choice="Rock";
-        
-    }else if(num>3&&num<=6){
-        choice="Paper";
-    }else{
-        choice="Scissors";
-    }
-    return choice;
+function getComputerChoice() {
+    const choices = ["Rock", "Paper", "Scissors"];
+    return choices[Math.floor(Math.random() * choices.length)];
 }
 
-function playGame(){
-    const div=document.createElement('div');
-    const para=document.createElement('p');
-    const paragraph=document.createElement('p');
-    para.classList.add('para');
-    paragraph.classList.add('para');
-    div.classList.add('div');
-    div.appendChild(para);
-    div.appendChild(paragraph);
-    document.body.appendChild(div);
+function playGame() {
 
-    
-    function playRound(humanChoice, computerChoice){
-        if(humanChoice==computerChoice){
-            console.log("Draw!")
-        }else if(humanChoice=="Rock"&& computerChoice=="Scissors"){
-            humanScore++;
-            console.log("You win! Rock beats Scissors")
-        }else if(humanChoice=="Paper"&& computerChoice=="Rock"){
-            humanScore++;
-            console.log("You win! Paper beats Rock")
-        }else if(humanChoice=="Scissors"&& computerChoice=="Paper"){
-            humanScore++;
-            console.log("You win! Scissors beats Paper")
-        }else if(humanChoice=="Rock"&& computerChoice=="Paper"){
-            computerScore++;
-            console.log("You lose! Paper beats Rock")
-        }else if(humanChoice=="Paper"&& computerChoice=="Scissors"){
-            computerScore++;
-            console.log("You lose! Scissors beats Paper")
-        }else if(humanChoice=="Scissors"&& computerChoice=="Rock"){
-            computerScore++;
-            console.log("You lose! Rock beats Scissors")
-        }
-        
-        
-        
-    }
-   
-    
+    const scoreboard = document.createElement('div');
+    scoreboard.style.border = "2px solid #333";
+    scoreboard.style.padding = "20px";
+    scoreboard.style.marginTop = "20px";
+    scoreboard.style.textAlign = "center";
 
-     rock.addEventListener('click',function (e){
-        if(isGameOver==true){return}
-        let computerSelection=getComputerChoice();
-        playRound('Rock',computerSelection);
-        para.textContent='You: Rock | Score: '+humanScore;
-        paragraph.textContent=' Computer: '+computerSelection; 
-        if(humanScore==5){
-        paragraph.textContent='YOU WIN!!'
-        isGameOver=true;
-    }if(computerScore==5){
-        paragraph.textContent='You lose.'
-        isGameOver=true;
-    }
-    
-   })
+    // 2. Create individual elements for specific data
+    const scoreDisplay = document.createElement('h2');
+    scoreDisplay.textContent = `Player: 0 | Computer: 0`;
 
-   paper.addEventListener('click',function (e){
-        let computerSelection=getComputerChoice();
-        playRound( "Paper",computerSelection);
-        para.textContent='You: Paper  | Score: '+humanScore;
-        paragraph.textContent=' Computer: '+computerSelection; 
-        if(humanScore==5){
-        paragraph.textContent='YOU WIN!!'
-        isGameOver=true;
-    }if(computerScore==5){
-        paragraph.textContent='You lose.'
-        isGameOver=true;
-    }
-    
-   })
+    const roundResult = document.createElement('p');
+    roundResult.textContent = "First to 5 wins! Make your move.";
+    roundResult.style.fontStyle = "italic";
 
-   scissors.addEventListener('click',function (e){
-        let computerSelection=getComputerChoice();
-        playRound( "Scissors",computerSelection);
-        para.textContent='You: Scissors  | Score: '+humanScore;
-        paragraph.textContent=' Computer: '+computerSelection;  
-        if(humanScore==5){
-        paragraph.textContent='YOU WIN!!'
-        isGameOver=true;
-    }if(computerScore==5){
-        paragraph.textContent='You lose.'
-        isGameOver=true;
-    } 
-
-    
-   })
   
-        
+    scoreboard.appendChild(scoreDisplay);
+    scoreboard.appendChild(roundResult);
+    document.body.appendChild(scoreboard);
+
+    function playRound(humanChoice, computerChoice) {
+        let resultMessage = "";
+
+        if (humanChoice === computerChoice) {
+            resultMessage = `It's a draw! Both chose ${humanChoice}`;
+        } else if (
+            (humanChoice === "Rock" && computerChoice === "Scissors") ||
+            (humanChoice === "Paper" && computerChoice === "Rock") ||
+            (humanChoice === "Scissors" && computerChoice === "Paper")
+        ) {
+            humanScore++;
+            resultMessage = `Point for you! ${humanChoice} beats ${computerChoice}`;
+        } else {
+            computerScore++;
+            resultMessage = `Point for computer! ${computerChoice} beats ${humanChoice}`;
+        }
+
+        // Update the display
+        scoreDisplay.textContent = `Player: ${humanScore} | Computer: ${computerScore}`;
+        roundResult.textContent = resultMessage;
+
+        checkWinner();
+    }
+
+    function checkWinner() {
+        if (humanScore === 5 || computerScore === 5) {
+            isGameOver = true;
+            roundResult.style.fontWeight = "bold";
+            roundResult.style.fontSize = "1.5rem";
+            
+            if (humanScore === 5) {
+                roundResult.textContent = "🏆 GAME OVER: YOU ARE THE CHAMPION!";
+                roundResult.style.color = "green";
+            } else {
+                roundResult.textContent = "🤖 GAME OVER: THE MACHINE HAS WON!";
+                roundResult.style.color = "red";
+            }
+        }
+    }
+
+    
+    const handleBtnClick = (choice) => {
+        if (isGameOver) return;
+        const computerSelection = getComputerChoice();
+        playRound(choice, computerSelection);
+    };
+
+    rock.addEventListener('click', () => handleBtnClick("Rock"));
+    paper.addEventListener('click', () => handleBtnClick("Paper"));
+    scissors.addEventListener('click', () => handleBtnClick("Scissors"));
 }
 
 playGame();
